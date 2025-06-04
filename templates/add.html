@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Employee</title>
+    <style>
+        body {
+            font-family: Helvetica, sans-serif;
+            color: white;
+            text-shadow: 1px 1px 2px black;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            position: relative;
+            z-index: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+        }
+        video#bg-video {
+            position: fixed;
+            right: 0;
+            bottom: 0;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: -1;
+            object-fit: cover;
+        }
+        .content {
+            position: relative;
+            z-index: 2;
+            padding: 20px;
+            max-width: 800px;
+            width: 100%;
+        }
+        .back-link {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <video autoplay muted loop id="bg-video">
+        <source src="/static/owo.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    <div class="content">
+        <h1>Add Employee</h1>
+        <form method="post" id="addForm">
+            First Name: <input type="text" name="first_name" id="first_name" value=""><br>
+            Second Name: <input type="text" name="second_name" id="second_name" value=""><br>
+            Hiring Date: <input type="date" name="hiring_date" id="hiring_date" value=""><br>
+            Specialization: <input type="text" name="specialization" id="specialization" value=""><br>
+            <input type="submit" value="Add">
+        </form>
+        <div id="error-message" style="color: red; font-weight: bold; margin-top: 10px;"></div>
+        <a href="{{ url_for('index') }}" class="back-link">Back to List</a>
+        <script>
+            document.getElementById('addForm').addEventListener('submit', function(event) {
+                var first_name = document.getElementById('first_name').value.trim();
+                var second_name = document.getElementById('second_name').value.trim();
+                var hiring_date = document.getElementById('hiring_date').value.trim();
+                var specialization = document.getElementById('specialization').value.trim();
+                var errorMessage = '';
+
+                if (!first_name) {
+                    errorMessage += 'First Name is required.<br>';
+                }
+                if (!second_name) {
+                    errorMessage += 'Second Name is required.<br>';
+                }
+                if (!hiring_date) {
+                    errorMessage += 'Hiring Date is required.<br>';
+                }
+                if (!specialization) {
+                    errorMessage += 'Specialization is required.<br>';
+                }
+
+                if (errorMessage) {
+                    event.preventDefault();
+                    document.getElementById('error-message').innerHTML = errorMessage;
+                }
+            });
+        </script>
+    </div>
+</body>
+</html>
