@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Employee List</title>
+    <style>
+        body {
+            font-family: Helvetica, sans-serif;
+            color: white;
+            text-shadow: 1px 1px 2px black;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            position: relative;
+            z-index: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+        }
+        video#bg-video {
+            position: fixed;
+            right: 0;
+            bottom: 0;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: -1;
+            object-fit: cover;
+        }
+        .content {
+            position: relative;
+            z-index: 2;
+            padding: 20px;
+            max-width: 800px;
+            width: 100%;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: rgba(160, 160, 160, 0.35);
+            color: white;
+        }
+        th, td {
+            border: 1px solid white;
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background-color: rgba(101, 101, 101, 0.26);
+        }
+        tr:nth-child(even) {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        tr:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        .btn {
+            background-color:rgba(161, 161, 161, 0.42);
+            color: white;
+            padding: 5px 10px;
+            text-decoration: none;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .btn:hover {
+            background-color:rgba(91, 91, 91, 0.44);
+        }
+        .btn-delete {
+            background-color:rgb(212, 52, 41);
+        }
+        .btn-delete:hover {
+            background-color:rgba(208, 57, 46, 0.73);
+        }
+        .add-link {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        .add-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <video autoplay muted loop id="bg-video">
+        <source src="/static/owo.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    <div class="content">
+        <img src="/static/Hololive.png" alt="Logo" style="display:block; margin: 0 auto 20px auto; max-width: 200px;">
+        <h1>Employees</h1>
+        <a href="/add" class="add-link">+ Add New Employee</a>
+        <table>
+            <thead>
+                <tr>
+                    <th>First Name</th>
+                    <th>Second Name</th>
+                    <th>Hiring Date</th>
+                    <th>Specialization</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for emp in employees %}
+                <tr>
+                    <td>{{ emp.first_name }}</td>
+                    <td>{{ emp.second_name }}</td>
+                    <td>{{ emp.hiring_date }}</td>
+                    <td>{{ emp.specialization }}</td>
+                    <td>
+                        <a href="{{ url_for('edit', id=emp.id) }}" class="btn">Edit</a>
+                        <form action="{{ url_for('delete', id=emp.id) }}" method="post" style="display:inline;">
+                            <button type="submit" class="btn btn-delete">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
