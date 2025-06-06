@@ -82,7 +82,11 @@ def add():
         hiring_date_str = request.form['hiring_date']
         specialization = request.form['specialization']
 
-        hiring_date = datetime.strptime(hiring_date_str, '%Y-%m-%d').date()
+        try:
+            hiring_date = datetime.strptime(hiring_date_str, '%Y-%m-%d').date()
+        except ValueError:
+            flash("Invalid date format. Please use YYYY-MM-DD.")
+            return "Invalid date format", 400
 
         my_data = Data(first_name, second_name, hiring_date, specialization)
         db.session.add(my_data)
@@ -141,7 +145,11 @@ def edit(id):
         my_data.first_name = request.form['first_name']
         my_data.second_name = request.form['second_name']
         hiring_date_str = request.form['hiring_date']
-        my_data.hiring_date = datetime.strptime(hiring_date_str, '%Y-%m-%d').date()
+        try:
+            my_data.hiring_date = datetime.strptime(hiring_date_str, '%Y-%m-%d').date()
+        except ValueError:
+            flash("Invalid date format. Please use YYYY-MM-DD.")
+            return "Invalid date format", 400
         my_data.specialization = request.form['specialization']
 
         db.session.commit()

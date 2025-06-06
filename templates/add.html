@@ -1,58 +1,11 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Add Employee</title>
-    <style>
-        body {
-            font-family: Helvetica, sans-serif;
-            color: white;
-            text-shadow: 1px 1px 2px black;
-            margin: 0;
-            padding: 0;
-            overflow-x: hidden;
-            position: relative;
-            z-index: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            text-align: center;
-        }
-        video#bg-video {
-            position: fixed;
-            right: 0;
-            bottom: 0;
-            min-width: 100%;
-            min-height: 100%;
-            width: auto;
-            height: auto;
-            z-index: -1;
-            object-fit: cover;
-        }
-        .content {
-            position: relative;
-            z-index: 2;
-            padding: 20px;
-            max-width: 800px;
-            width: 100%;
-        }
-        .back-link {
-            color: white;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 16px;
-        }
-        .back-link:hover {
-            text-decoration: underline;
-        }
-    </style>
-</head>
-<body>
-    <video autoplay muted loop id="bg-video">
+{% extends "base.html" %}
+{% block title %}Add Employee{% endblock %}
+{% block body %}
+    <video autoplay muted loop id="bg-video" style="position: fixed; right: 0; bottom: 0; min-width: 100%; min-height: 100%; width: auto; height: auto; z-index: -1; object-fit: cover;">
         <source src="/static/owo.mp4" type="video/mp4">
         Your browser does not support the video tag.
     </video>
-    <div class="content">
+    <div class="content" style="position: relative; z-index: 2; padding: 20px; max-width: 800px; width: 100%; font-family: Helvetica, sans-serif; color: white; text-shadow: 1px 1px 2px black; text-align: center; margin-left: auto; margin-right: auto;">
         <h1>Add Employee</h1>
         <form method="post" id="addForm">
             First Name: <input type="text" name="first_name" id="first_name" value=""><br>
@@ -62,7 +15,7 @@
             <input type="submit" value="Add">
         </form>
         <div id="error-message" style="color: red; font-weight: bold; margin-top: 10px;"></div>
-        <a href="{{ url_for('index') }}" class="back-link">Back to List</a>
+        <a href="{{ url_for('index') }}" class="back-link" style="color: white; text-decoration: none; font-weight: bold; font-size: 16px;">Back to List</a>
         <script>
             document.getElementById('addForm').addEventListener('submit', function(event) {
                 var first_name = document.getElementById('first_name').value.trim();
@@ -91,5 +44,4 @@
             });
         </script>
     </div>
-</body>
-</html>
+{% endblock %}
