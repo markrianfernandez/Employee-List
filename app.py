@@ -1,12 +1,15 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
 from datetime import date, datetime
+from flasgger import Swagger
 
 app = Flask(__name__)
 app.secret_key = "Secret Key"
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///emp.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+swagger = Swagger(app)
 
 db = SQLAlchemy(app)
 
@@ -27,11 +30,52 @@ class Data(db.Model):
 @app.route('/')
 @app.route('/home')
 def index():
+    """
+    Employee List
+    ---
+    get:
+      description: Get all employees
+      responses:
+        200:
+          description: A list of employees
+    """
     all_data = Data.query.all()
     return render_template("index.html", employees=all_data)
 
 @app.route('/add', methods=['GET', 'POST'])
 def add():
+    """
+    Add Employee
+    ---
+    post:
+      description: Add a new employee
+      parameters:
+        - name: first_name
+          in: formData
+          type: string
+          required: true
+        - name: second_name
+          in: formData
+          type: string
+          required: true
+        - name: hiring_date
+          in: formData
+          type: string
+          format: date
+          required: true
+        - name: specialization
+          in: formData
+          type: string
+          required: true
+      responses:
+        302:
+          description: Redirect to employee list
+    get:
+      description: Render add employee form
+      responses:
+        200:
+          description: Add employee form
+    """
     if request.method == 'POST':
         first_name = request.form['first_name']
         second_name = request.form['second_name']
@@ -51,6 +95,47 @@ def add():
 
 @app.route('/edit/<int:id>', methods=['GET', 'POST'])
 def edit(id):
+    """
+    Edit Employee
+    ---
+    post:
+      description: Edit an existing employee
+      parameters:
+        - name: id
+          in: path
+          type: integer
+          required: true
+        - name: first_name
+          in: formData
+          type: string
+          required: true
+        - name: second_name
+          in: formData
+          type: string
+          required: true
+        - name: hiring_date
+          in: formData
+          type: string
+          format: date
+          required: true
+        - name: specialization
+          in: formData
+          type: string
+          required: true
+      responses:
+        302:
+          description: Redirect to employee list
+    get:
+      description: Render edit employee form
+      parameters:
+        - name: id
+          in: path
+          type: integer
+          required: true
+      responses:
+        200:
+          description: Edit employee form
+    """
     my_data = Data.query.get_or_404(id)
     if request.method == 'POST':
         my_data.first_name = request.form['first_name']
@@ -67,6 +152,20 @@ def edit(id):
 
 @app.route('/delete/<int:id>', methods=['POST'])
 def delete(id):
+    """
+    Delete Employee
+    ---
+    post:
+      description: Delete an employee
+      parameters:
+        - name: id
+          in: path
+          type: integer
+          required: true
+      responses:
+        302:
+          description: Redirect to employee list
+    """
     my_data = Data.query.get_or_404(id)
     db.session.delete(my_data)
     db.session.commit()
